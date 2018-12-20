@@ -95,6 +95,8 @@ class CapLevel extends StatelessWidget {
         else
           _c = allianceBlue;
       }
+      BorderSide top = i!=_max-1?BorderSide(color: Colors.grey[600],width: 0.5):BorderSide.none;
+      BorderSide bottom = i!=0?BorderSide(color: Colors.grey[600],width: 0.5):BorderSide.none;
       _boxes.insert(
         0,
         GestureDetector(
@@ -118,16 +120,23 @@ class CapLevel extends StatelessWidget {
             height: _boxHeight,
             decoration: BoxDecoration(
               color: _c,
-              border: Border.all(
-                color: Colors.black,
-                width: 0.5,
+              border: Border(
+                top: top,
+                bottom: bottom,
               ),
             ),
           ),
         ),
       );
     }
-    return Column(children: _boxes);
+    return Container(
+      child: Column(children: _boxes),
+      padding: EdgeInsets.all(3.0),
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(5.0),
+      ),
+    );
   }
 }
 
@@ -213,8 +222,8 @@ class CalculatorPageState extends State<CalculatorPage> {
       _blueScore.lowCap = 0;
     else if (_blueScore.lowCap > 8) _blueScore.lowCap = 8;
 
-    double _flagWidth = (MediaQuery.of(context).size.width - 130.0) / 3;
-    _boxHeight = (MediaQuery.of(context).size.height - 230.0) / 14;
+    double _flagWidth = (MediaQuery.of(context).size.width - 142.0) / 3;
+    _boxHeight = (MediaQuery.of(context).size.height - 242.0) / 14;
     Duration _d = Duration(seconds: 0);
     if (_s.isRunning) {
       if (_matchType)
@@ -572,11 +581,107 @@ class CalculatorPageState extends State<CalculatorPage> {
                   Container(height: 20.0),
                   Row(
                     children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          _redScore.alliancePark++;
+                          if (_redScore.alliancePark > 2)
+                            _redScore.alliancePark = 0;
+                          setState(() {});
+                        },
+                        child: Container(
+                          height: _flagWidth,
+                          width: _flagWidth - 10.0,
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Center(
+                            child: Text(
+                              _redScore.alliancePark.toString(),
+                              style: TextStyle(
+                                  fontSize: 50.0, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          _redScore.centerPark++;
+                          if (_redScore.centerPark > 2)
+                            _redScore.centerPark = 0;
+                          setState(() {});
+                        },
+                        child: Container(
+                          height: _flagWidth,
+                          width: _flagWidth / 2 + 10.0,
+                          decoration: BoxDecoration(
+                            color: Colors.yellowAccent[700],
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10.0),
+                              bottomLeft: Radius.circular(10.0),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              _redScore.centerPark.toString(),
+                              style: TextStyle(
+                                  fontSize: 50.0, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ),
                       Container(
-                        child: Text(
-                          _redScore.alliancePark.toString(),
-                          style: TextStyle(
-                              fontSize: 30.0, fontWeight: FontWeight.bold),
+                        width: 1.5,
+                        height: _flagWidth,
+                        color: Colors.black,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          _blueScore.centerPark++;
+                          if (_blueScore.centerPark > 2)
+                            _blueScore.centerPark = 0;
+                          setState(() {});
+                        },
+                        child: Container(
+                          height: _flagWidth,
+                          width: _flagWidth / 2 + 10.0,
+                          decoration: BoxDecoration(
+                            color: Colors.yellowAccent[700],
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(10.0),
+                              bottomRight: Radius.circular(10.0),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              _blueScore.centerPark.toString(),
+                              style: TextStyle(
+                                  fontSize: 50.0, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          _blueScore.alliancePark++;
+                          if (_blueScore.alliancePark > 2)
+                            _blueScore.alliancePark = 0;
+                          setState(() {});
+                        },
+                        child: Container(
+                          height: _flagWidth,
+                          width: _flagWidth - 10.0,
+                          decoration: BoxDecoration(
+                            color: allianceBlue,
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Center(
+                            child: Text(
+                              _blueScore.alliancePark.toString(),
+                              style: TextStyle(
+                                  fontSize: 50.0, fontWeight: FontWeight.bold),
+                            ),
+                          ),
                         ),
                       ),
                     ],
