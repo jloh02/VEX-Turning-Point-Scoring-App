@@ -59,16 +59,34 @@ class Score {
         autonScore;
   }
 
-  void clear() {
-    lowCap = 0;
-    highCap = 0;
-    lowFlag = 0;
-    highFlag = 0;
-    alliancePark = 0;
-    centerPark = 0;
-    auton = false;
-    _flagStatus.clear();
-    for (int i = 0; i < 9; i++) _flagStatus.add(0);
+  void clear(bool _matchMode) {
+    if(!_matchMode) {
+      lowCap = 0;
+      highCap = 0;
+      lowFlag = 0;
+      highFlag = 0;
+      alliancePark = 0;
+      centerPark = 0;
+      auton = false;
+      _flagStatus.clear();
+      for (int i = 0; i < 9; i++)
+        _flagStatus.add(0);
+    }
+    else {
+      lowCap = 0;
+      highCap = 0;
+      lowFlag = 1;
+      highFlag = 2;
+      alliancePark = 0;
+      centerPark = 0;
+      auton = false;
+      _flagStatus.clear();
+      for (int i = 0; i < 9; i+=3) {
+        _flagStatus.add(2);
+        _flagStatus.add(0);
+        _flagStatus.add(1);
+      }
+    }
   }
 }
 
@@ -179,6 +197,8 @@ class CalculatorPageState extends State<CalculatorPage> {
     _initVal.add(_redScore.lowCap);
     _initVal.add(_blueScore.highCap);
     _initVal.add(_blueScore.lowCap);
+    _redScore.clear(_matchType);
+    _blueScore.clear(_matchType);
     super.initState();
   }
 
@@ -307,8 +327,8 @@ class CalculatorPageState extends State<CalculatorPage> {
             IconButton(
               icon: Icon(Icons.delete),
               onPressed: () {
-                _redScore.clear();
-                _blueScore.clear();
+                _redScore.clear(_matchType);
+                _blueScore.clear(_matchType);
               },
             ),
             IconButton(
@@ -440,6 +460,8 @@ class CalculatorPageState extends State<CalculatorPage> {
                       _s.stop();
                       _s.reset();
                       _stopwatchStarted = false;
+                      _redScore.clear(_matchType);
+                      _blueScore.clear(_matchType);
                     }),
               ),
               Expanded(child: Container()),
@@ -739,7 +761,7 @@ class CalculatorPageState extends State<CalculatorPage> {
       },
       onPanUpdate: (DragUpdateDetails d) {
         double _dist = _initCaps[v] - d.globalPosition.dy;
-        int _num = (_dist / _boxHeight).round(); //TODO change 30.0
+        int _num = (_dist / _boxHeight).round();
         /*
         debugPrint(_initVal[v].toString());
         debugPrint(_num.toString());
